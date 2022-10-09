@@ -1,1 +1,55 @@
+//SMART HOME SIMULATION
+int Buzzer= 5; 
+int LED= 13; 
+int PIR_sensor= 2; 
+ int state;
+#define echoPin 4 
+#define trigPin 3  
+double duration; 
+int distance;
+void setup() {
+pinMode(trigPin, OUTPUT); 
+pinMode(echoPin, INPUT);   
+pinMode(Buzzer, OUTPUT);
+pinMode(LED, OUTPUT);
+pinMode(PIR_sensor, INPUT);
+Serial.begin(9600);
+}
 
+void loop() {
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+ 
+  duration = pulseIn(echoPin, HIGH);
+  
+  distance = duration * 0.034 / 2; 
+  
+  Serial.print("Distance: ");
+  Serial.print(distance);
+  Serial.println(" cm");
+  if(distance<=30){
+    digitalWrite(LED, HIGH);
+    Serial.println("Someone is near");
+  }
+  else 
+{
+  digitalWrite(LED, LOW);
+  Serial.println("No one is near");
+  }
+state = digitalRead(PIR_sensor); 
+if(state == HIGH){
+   
+  digitalWrite(Buzzer, HIGH); 
+  Serial.println("Motion identified"); 
+}
+else 
+{
+  
+  digitalWrite(Buzzer, LOW);
+  Serial.println("No motion");
+}
+}
